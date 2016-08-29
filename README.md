@@ -4,9 +4,15 @@
 
 > When something is important enough, you do it even if the odds are not in your favor. ~[Elon Musk](https://en.wikipedia.org/wiki/Elon_Musk)
 
-## Learning Objectives - The student should be able to...
+## Overview
 
-* Create content when we have a sense at what exactly was presented to the student here.
+In this lesson we'll build an app together that involves laying out the UI, using navigation controllers, and setting up the TableView controller. 
+
+## Learning Objectives
+
+* Set up the UI of an application
+* Add a navigation controller to an application 
+* Implement a tableview
 
 ## Introduction
 
