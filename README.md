@@ -129,75 +129,40 @@ Now you can fill in the methods that will provide data back to your table view. 
 The first is `numberOfSectionsInTableView(_:)`, which returns the number of _sections_ in the table view. In this relatively simple app, there is only one section, so this method can return 1:
 
 ```swift
-override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return 1
-}
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
 ```
 
 The second method you must provide is `tableView(_:numberOfRowsInSection:)`, which returns the number of _rows_ for a given section. There's only one section, so you don't have to worry about the section in this method. There is one row for each song, so you can just return the total number of songs:
 
 ```swift
-override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return dirtyDancingSoundtrack.count
-}
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dirtyDancingSoundtrack.count
+    }
 ```
 
-Finally, the trickiest of the three methods: `tableView(_:cellForRowAtIndexPath:)`. Remember, this method passes in an exact section (which is always `0` in this app, since there's only one section) and row number, and is responsible for returning a rendered _cell_ corresponding to that row. This method is a bit tricky because you have to worry about _dequeuing_ a cell (do you remember why from the previous lesson) and setting its text label correctly.
+Finally, the trickiest of the three methods: `tableView(_:cellForRowAt:)`. Remember, this method passes in an exact section (which is always `0` in this app, since there's only one section) and row number, and is responsible for returning a rendered _cell_ corresponding to that row. This method is a bit tricky because you have to worry about _dequeuing_ a cell (do you remember why from the previous lesson) and setting its text label correctly.
 
 Go ahead and try this one yourself. Refer back to the previous lesson if you need to.
 
-When you've implemented `tableView(_:cellForRowAtIndexPath:)`, it should look something like this:
+When you've implemented `tableView(_:cellForRowAt:)`, it should look something like this:
 
 ```swift
-override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
     let songTitle = dirtyDancingSoundtrack[indexPath.row]
     cell.textLabel?.text = songTitle
     return cell
-}
+    }
 ```
 
-What's going on here? First you call `tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)` to get a cell for the given row number. You use the same _reuseIdentifier_ that you specified when setting up the table view in `Main.storyboard` ("DirtyCell"). This part is key—make sure you use the _exact same_ reuse identifier. Otherwise, you'll get a completely different type of cell!
+
+What's going on here? First you call `tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)` to get a cell for the given row number. You use the same _reuseIdentifier_ that you specified when setting up the table view in `Main.storyboard` ("DirtyCell"). This part is key—make sure you use the _exact same_ reuse identifier. Otherwise, you'll get a completely different type of cell!
 
 This _may_ be a cell that was already allocated (and is being reused), or it may be a completely new one. On the next line, you get the song title for that row (which is at the same index in the `dirtyDancingSoundtrack` array). On the third line, you set the cell's label to the song title, and then finally return the initialized cell on the fourth line.
 
-Surprisingly, that's it. You're done implementing the table view. The complete implementation of `TableViewController` should look like this:
-
-```swift
-class TableViewController: UITableViewController {
-    let dirtyDancingSoundtrack = [
-        "(I've Had) The Time of My Life",
-        "Be My Baby",
-        "She's Like the Wind",
-        "Hungry Eyes",
-        "STAY",
-        "Yes",
-        "You Don't Own Me",
-        "Hey Baby",
-        "Overload",
-        "Love Is Strange",
-        "Where Are You Tonight?",
-        "In the Still of the Night"
-    ]
-
-    // MARK: - Table View Data Source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dirtyDancingSoundtrack.count
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("DirtyCell", forIndexPath: indexPath)
-        let songTitle = dirtyDancingSoundtrack[indexPath.row]
-        cell.textLabel?.text = songTitle
-        return cell
-    }
-}
-```
+Surprisingly, that's it. You're done implementing the table view.
 
 Now you can build and run your app and see it in action!
 
